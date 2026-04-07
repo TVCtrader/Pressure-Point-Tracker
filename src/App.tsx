@@ -17,7 +17,9 @@ import {
   Eye,
   RefreshCw,
   Calendar,
-  Loader2
+  Loader2,
+  Copy,
+  Check
 } from 'lucide-react';
 import { useAppState } from './hooks/useAppState';
 import { SOCIAL_PRESSURE_ITEMS, INVESTMENT_PRESSURE_ITEMS, SELF_PROTECTION_ITEMS } from './constants';
@@ -34,6 +36,7 @@ export default function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [dailySummary, setDailySummary] = useState<string | null>(null);
   const [isLoadingSummary, setIsLoadingSummary] = useState(false);
+  const [isCopied, setIsCopied] = useState(false);
 
   const tabs = [
     { id: 'DAILY', label: '每日預判', icon: Calendar, items: [] },
@@ -44,6 +47,7 @@ export default function App() {
 
   const handleFetchSummary = async () => {
     setIsLoadingSummary(true);
+    setIsCopied(false);
     try {
       const summary = await fetchDailyPressurePointsSummary();
       setDailySummary(summary);
@@ -51,6 +55,17 @@ export default function App() {
       setDailySummary("獲取每日總結失敗，請檢查 API Key 或網路連接。");
     } finally {
       setIsLoadingSummary(false);
+    }
+  };
+
+  const handleCopySummary = async () => {
+    if (!dailySummary) return;
+    try {
+      await navigator.clipboard.writeText(dailySummary);
+      setIsCopied(true);
+      setTimeout(() => setIsCopied(false), 2000);
+    } catch (err) {
+      console.error('Failed to copy: ', err);
     }
   };
 
@@ -157,13 +172,29 @@ export default function App() {
                       <Search className="w-5 h-5 text-indigo-400" />
                       今日全球壓力點分析報告
                     </h3>
-                    <button 
-                      onClick={handleFetchSummary}
-                      disabled={isLoadingSummary}
-                      className="p-2 hover:bg-slate-800 rounded-lg transition-colors text-slate-400 hover:text-indigo-400 disabled:opacity-50"
-                    >
-                      <RefreshCw className={cn("w-5 h-5", isLoadingSummary && "animate-spin")} />
-                    </button>
+                    <div className="flex items-center gap-2">
+                      {dailySummary && (
+                        <button 
+                          onClick={handleCopySummary}
+                          className="flex items-center gap-2 p-2 hover:bg-slate-800 rounded-lg transition-all text-slate-400 hover:text-indigo-400"
+                          title="複製報告內容"
+                        >
+                          {isCopied ? (
+                            <Check className="w-5 h-5 text-green-500" />
+                          ) : (
+                            <Copy className="w-5 h-5" />
+                          )}
+                        </button>
+                      )}
+                      <button 
+                        onClick={handleFetchSummary}
+                        disabled={isLoadingSummary}
+                        className="p-2 hover:bg-slate-800 rounded-lg transition-colors text-slate-400 hover:text-indigo-400 disabled:opacity-50"
+                        title="重新整理"
+                      >
+                        <RefreshCw className={cn("w-5 h-5", isLoadingSummary && "animate-spin")} />
+                      </button>
+                    </div>
                   </div>
 
                   <div className="prose prose-invert prose-indigo max-w-none">
