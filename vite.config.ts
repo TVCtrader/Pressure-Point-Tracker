@@ -18,18 +18,7 @@ export default defineConfig(({mode}) => {
           short_name: 'PressurePoints',
           description: 'Track social and investment market pressure points.',
           theme_color: '#4f46e5',
-          icons: [
-            {
-              src: 'pwa-192x192.png',
-              sizes: '192x192',
-              type: 'image/png'
-            },
-            {
-              src: 'pwa-512x512.png',
-              sizes: '512x512',
-              type: 'image/png'
-            }
-          ]
+          icons: []
         }
       })
     ],
