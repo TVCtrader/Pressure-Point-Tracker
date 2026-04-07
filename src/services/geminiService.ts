@@ -11,11 +11,12 @@ export async function fetchDailyPressurePointsSummary() {
   const prompt = `
     你是一位專業的社會與投資市場分析師。請根據今天的全球重大新聞、社交媒體趨勢及市場動態，找出符合以下「壓力點」（Pressure Points）徵兆的實例並提供每日總結。
     
-    請將報告分為以下四個部分進行詳細分析：
+    請將報告分為以下五個部分進行詳細分析：
     1. 全球 (Global)
-    2. 中國 (China)
-    3. 香港 (Hong Kong)
-    4. 日本 (Japan)
+    2. 美國 (USA)
+    3. 中國 (China)
+    4. 香港 (Hong Kong)
+    5. 日本 (Japan)
 
     在每個部分中，請針對以下徵兆進行檢索與分析：
     - 傳媒表現：是否有大量頻道同時使用相同的激進辭彙或口號？
