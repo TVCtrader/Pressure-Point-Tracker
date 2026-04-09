@@ -7,13 +7,20 @@ export async function fetchDailyPressurePointsSummary() {
   }
 
   const ai = new GoogleGenAI({ apiKey });
+  const currentDate = new Date().toISOString().split('T')[0];
+  const currentTime = new Date().toUTCString();
   
   const prompt = `
-    你是一位專業的社會與投資市場分析師。請**僅針對「當天」(Today) 或「過去 24 小時內」**發生的全球重大新聞、社交媒體趨勢及市場動態，找出符合以下「壓力點」（Pressure Points）徵兆的實例並提供每日總結。
+    你是一位專業的社會與投資市場分析師。現在的時間是 ${currentTime} (UTC)。
+    請**僅針對「當天」(${currentDate}) 或「過去 24 小時內」**發生的全球重大新聞、社交媒體趨勢及市場動態進行實時檢索。
+    
+    **檢索與分析指令：**
+    請利用 Google Search 搜尋最新的實時資訊，找出符合以下「壓力點」（Pressure Points）徵兆的實例並提供每日總結。
     
     **嚴格要求：** 
-    - 請忽略過往的歷史事件，除非該事件在今天有了重大的新進展、新鋪排或轉折。
-    - 報告必須反映當下的實時「水壓」狀況。
+    - **時效性限制**：請忽略過往的歷史事件，除非該事件在今天有了重大的新進展、新鋪排或轉折。
+    - **來源時效**：所引用的網址連結必須是過去 24 小時內發布的新聞或頁面。
+    - **報告內容**：必須反映當下的實時「水壓」狀況。
     
     請將報告分為以下五個部分進行詳細分析：
     1. 全球 (Global)
@@ -35,13 +42,10 @@ export async function fetchDailyPressurePointsSummary() {
 
     請以結構清晰的 Markdown 格式回覆，包含具體事件、分析原因及潛在影響。
     
-    **重要要求：** 
+    **引用規範：** 
     - 對於提到的每一個具體事件或徵兆，請務必標註**消息來源出處**。
-    - **必須提供可點擊的網址連結 (Website Address Link)**，並使用 Markdown 格式呈現（例如：[來源名稱](https://example.com)）。
-    - **嚴格限制：所引用的網址連結必須是過去 24 小時內發布的新聞或頁面**，以確保資訊的即時性。
+    - **必須提供可點擊的網址連結 (Website Address Link)**，並使用 Markdown 格式呈現（例如：[來源名稱](網址)）。
     - 優先引用主流媒體、官方公告或具公信力的數據平台。
-    
-    如果某個區域今天沒有明顯徵兆，請說明該區域目前的觀察狀態。
   `;
 
   try {
