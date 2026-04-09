@@ -35,6 +35,7 @@ export async function fetchDailyPressurePointsSummary() {
     **重要要求：** 
     - 對於提到的每一個具體事件或徵兆，請務必標註**消息來源出處**。
     - **必須提供可點擊的網址連結 (Website Address Link)**，並使用 Markdown 格式呈現（例如：[來源名稱](https://example.com)）。
+    - **嚴格限制：所引用的網址連結必須是過去 24 小時內發布的新聞或頁面**，以確保資訊的即時性。
     - 優先引用主流媒體、官方公告或具公信力的數據平台。
     
     如果某個區域今天沒有明顯徵兆，請說明該區域目前的觀察狀態。
